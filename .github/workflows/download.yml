@@ -1,0 +1,29 @@
+name: download
+
+on:
+  workflow_run:
+    workflows:
+      - upload
+    types:
+      - completed
+
+jobs:
+  download:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
+
+    permissions:
+      contents: read
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: upload-artifact
+          path: ~/artifacts
+
+      - run: cat ~/artifacts/file.txt
