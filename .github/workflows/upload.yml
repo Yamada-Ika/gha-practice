@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  upload:
     permissions:
       contents: read
 
@@ -21,7 +21,7 @@ jobs:
 
       - run: echo 'Hello, world!' > file.txt
 
-     - name: Print branch name
+      - name: Print branch name
         run: |
           # `github.ref` からブランチ名を取得
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
