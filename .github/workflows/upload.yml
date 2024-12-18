@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  upload:
     permissions:
       contents: read
 
@@ -21,17 +21,15 @@ jobs:
 
       - run: echo 'Hello, world!' > file.txt
 
+      - name: Print branch name
+        run: |
+          # `github.ref` からブランチ名を取得
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          echo "Current branch: $BRANCH_NAME"
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: upload-artifact
           path: file.txt
           retention-days: 14
-
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: upload-artifact
-          path: ~/artifacts
-
-      - run: cat ~/artifacts/file.txt
